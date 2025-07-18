@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-blue-400 leading-tight font-['Creepster']">
-            {{ __('Edit') }}
+        <h2 class="font-semibold text-xl text-blue-400 leading-tight font-['']">
+            {{ __('Messages') }}
         </h2>
     </x-slot>
 
@@ -9,30 +9,34 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg border border-blue-500">
                 <div class="p-6 bg-gray-800">
-                    <form method="POST" action="{{ route('profile.update') }}">
-                        @csrf
-                        <div class="mb-4">
-                            <label for="name" class="block text-blue-400 text-sm font-bold mb-2">Witch/Warlock Name</label>
-                            <input type="text" name="name" id="name" value="{{ auth()->user()->name }}" required class="shadow appearance-none border border-blue-500 rounded w-full py-2 px-3 bg-gray-700 text-gray-300 leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div class="mb-4">
-                            <label for="email" class="block text-blue-400 text-sm font-bold mb-2">Coven Email</label>
-                            <input type="email" name="email" id="email" value="{{ auth()->user()->email }}" required class="shadow appearance-none border border-blue-500 rounded w-full py-2 px-3 bg-gray-700 text-gray-300 leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div class="mb-4">
-                            <label for="password" class="block text-blue-400 text-sm font-bold mb-2">New Magic Spell (leave blank to keep current)</label>
-                            <input type="password" name="password" id="password" class="shadow appearance-none border border-blue-500 rounded w-full py-2 px-3 bg-gray-700 text-gray-300 leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div class="mb-4">
-                            <label for="password_confirmation" class="block text-blue-400 text-sm font-bold mb-2">Confirm Magic Spell</label>
-                            <input type="password" name="password_confirmation" id="password_confirmation" class="shadow appearance-none border border-blue-500 rounded w-full py-2 px-3 bg-gray-700 text-gray-300 leading-tight focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div class="flex items-center justify-end">
-                            <button type="submit" class="bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded">
-                                Update
-                            </button>
-                        </div>
-                    </form>
+                    @if($notifications->isEmpty())
+                        <p class="text-gray-300">No messages found.</p>
+                    @else
+                        <ul class="divide-y divide-gray-700">
+                            @foreach($notifications as $notification)
+                            <li class="py-4">
+                                <div class="flex justify-between">
+                                    <p class="text-gray-300 {{ $notification->read_at ? '' : 'font-bold text-blue-400' }}">
+                                         {{ $notification->message }}
+                                    </p>
+                                    <div class="flex space-x-2">
+                                        <span class="text-sm text-gray-500">
+                                            {{ $notification->created_at->diffForHumans() }}
+                                        </span>
+                                        @if(!$notification->read_at)
+                                        <form action="{{ route('notifications.markAsRead', $notification->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="text-purple-400 hover:text-purple-300 text-sm">
+                                                Delete
+                                            </button>
+                                        </form>
+                                        @endif
+                                    </div>
+                                </div>
+                            </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
             </div>
         </div>
