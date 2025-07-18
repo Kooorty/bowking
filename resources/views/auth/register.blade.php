@@ -1,59 +1,154 @@
 <x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8 bg-gray-800 p-8 rounded-xl shadow-lg border border-purple-500">
-            <div class="text-center">
-                <svg class="mx-auto h-16 w-16 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                </svg>
-                <h2 class="mt-4 text-center text-3xl font-extrabold text-purple-500">
-                    Brew a new potion
-                </h2>
-                <p class="mt-2 text-center text-sm text-gray-300">
-                    Or
-                    <a href="{{ route('login') }}" class="font-medium text-orange-500 hover:text-orange-400">
-                        sign in to your cauldron
-                    </a>
-                </p>
-            </div>
+    <!-- Angelic Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-            <x-auth-validation-errors class="mb-4" :errors="$errors" />
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fdfbfb, #ebedee, #fdf6f9);
+            color: #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
 
-            <form class="mt-8 space-y-6" method="POST" action="{{ route('register') }}">
-                @csrf
-                <div class="rounded-md shadow-sm space-y-4">
-                    <div>
-                        <label for="name" class="sr-only">Name</label>
-                        <input id="name" name="name" type="text" autocomplete="name" required
-                               class="appearance-none rounded-none relative block w-full px-3 py-3 bg-gray-700 border border-gray-600 placeholder-gray-400 text-white rounded-t-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                               placeholder="Witch or Warlock name" value="{{ old('name') }}">
-                    </div>
-                    <div>
-                        <label for="email" class="sr-only">Email address</label>
-                        <input id="email" name="email" type="email" autocomplete="email" required
-                               class="appearance-none rounded-none relative block w-full px-3 py-3 bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                               placeholder="Coven email" value="{{ old('email') }}">
-                    </div>
-                    <div>
-                        <label for="password" class="sr-only">Password</label>
-                        <input id="password" name="password" type="password" autocomplete="new-password" required
-                               class="appearance-none rounded-none relative block w-full px-3 py-3 bg-gray-700 border border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                               placeholder="Magic spell">
-                    </div>
-                    <div>
-                        <label for="password_confirmation" class="sr-only">Confirm Password</label>
-                        <input id="password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" required
-                               class="appearance-none rounded-none relative block w-full px-3 py-3 bg-gray-700 border border-gray-600 placeholder-gray-400 text-white rounded-b-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                               placeholder="Confirm spell">
-                    </div>
-                </div>
+        form {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 2rem;
+            box-shadow: 0 12px 30px rgba(200, 180, 255, 0.3);
+            width: 100%;
+            max-width: 540px;
+            border: 2px solid #f0e6ff;
+        }
 
-                <div>
-                    <button type="submit"
-                            class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                        Brew Potion
-                    </button>
-                </div>
-            </form>
+        h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #b076ff;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            color: #6c5ce7;
+            font-size: 1.1rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            background-color: #f9f5ff;
+            color: #444;
+            border: 1px solid #d6c8f4;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #b38aff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(179, 138, 255, 0.2);
+        }
+
+        .error {
+            color: #d64565;
+            font-size: 0.9rem;
+            margin-top: -1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .form-footer a {
+            font-size: 1rem;
+            color: #a78bfa;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            color: #9c6eff;
+            text-decoration: underline;
+        }
+
+        button {
+            background: linear-gradient(to right, #dcb7ff, #a174ff);
+            color: white;
+            padding: 0.85rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 6px 18px rgba(177, 123, 255, 0.3);
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #cfa6ff, #9057ff);
+            transform: scale(1.03);
+        }
+    </style>
+
+    <form method="POST" action="{{ route('register') }}">
+        @csrf
+
+        <h2>Register now~</h2>
+
+        <!-- Name -->
+        <div>
+            <label for="name">{{ __('Name') }}</label>
+            <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name">
+            @if ($errors->has('name'))
+                <div class="error">{{ $errors->first('name') }}</div>
+            @endif
         </div>
-    </div>
+
+        <!-- Email -->
+        <div>
+            <label for="email">{{ __('Email') }}</label>
+            <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="username">
+            @if ($errors->has('email'))
+                <div class="error">{{ $errors->first('email') }}</div>
+            @endif
+        </div>
+
+        <!-- Password -->
+        <div>
+            <label for="password">{{ __('Password') }}</label>
+            <input id="password" type="password" name="password" required autocomplete="new-password">
+            @if ($errors->has('password'))
+                <div class="error">{{ $errors->first('password') }}</div>
+            @endif
+        </div>
+
+        <!-- Confirm Password -->
+        <div>
+            <label for="password_confirmation">{{ __('Confirm Password') }}</label>
+            <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password">
+            @if ($errors->has('password_confirmation'))
+                <div class="error">{{ $errors->first('password_confirmation') }}</div>
+            @endif
+        </div>
+
+        <!-- Footer -->
+        <div class="form-footer">
+            <a href="{{ route('login') }}">{{ __('Already registered?') }}</a>
+            <button type="submit">{{ __('Register') }}</button>
+        </div>
+    </form>
 </x-guest-layout>
