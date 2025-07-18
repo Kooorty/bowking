@@ -1,64 +1,193 @@
-<x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8 bg-gray-800 p-8 rounded-xl shadow-lg border border-orange-500">
-            <div class="text-center">
-                <svg class="mx-auto h-16 w-16 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                </svg>
-                <h2 class="mt-4 text-center text-3xl font-extrabold text-orange-500">
-                    Sign in to your cauldron
-                </h2>
-                <p class="mt-2 text-center text-sm text-gray-300">
-                    Or
-                    <a href="{{ route('register') }}" class="font-medium text-purple-500 hover:text-purple-400">
-                        brew a new potion
-                    </a>
-                </p>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-            <x-auth-validation-errors class="mb-4" :errors="$errors" />
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fefaff, #f8f0ff, #fff7fb);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #444;
+    }
 
-            <form class="mt-8 space-y-6" method="POST" action="{{ route('login') }}">
-                @csrf
-                <input type="hidden" name="remember" value="true">
-                <div class="rounded-md shadow-sm space-y-4">
-                    <div>
-                        <label for="email" class="sr-only">Email address</label>
-                        <input id="email" name="email" type="email" autocomplete="email" required
-                               class="appearance-none rounded-none relative block w-full px-3 py-3 bg-gray-700 border border-gray-600 placeholder-gray-400 text-white rounded-t-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
-                               placeholder="Witch's email" value="{{ old('email') }}">
-                    </div>
-                    <div>
-                        <label for="password" class="sr-only">Password</label>
-                        <input id="password" name="password" type="password" autocomplete="current-password" required
-                               class="appearance-none rounded-none relative block w-full px-3 py-3 bg-gray-700 border border-gray-600 placeholder-gray-400 text-white rounded-b-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
-                               placeholder="Magic spell">
-                    </div>
-                </div>
+    .login-container {
+      background: rgba(255, 255, 255, 0.96);
+      padding: 3rem;
+      max-width: 480px;
+      width: 100%;
+      border-radius: 2rem;
+      border: 2px solid #eee0ff;
+      box-shadow: 0 10px 25px rgba(190, 160, 255, 0.25);
+    }
 
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input id="remember_me" name="remember" type="checkbox"
-                               class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-600 rounded bg-gray-700">
-                        <label for="remember_me" class="ml-2 block text-sm text-gray-300">
-                            Remember my broom
-                        </label>
-                    </div>
+    h2 {
+      font-family: 'Great Vibes', cursive;
+      text-align: center;
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+      color: #b179ff;
+    }
 
-                    <div class="text-sm">
-                        <a href="{{ route('password.request') }}" class="font-medium text-purple-500 hover:text-purple-400">
-                            Forgot your spell?
-                        </a>
-                    </div>
-                </div>
+    .description {
+      text-align: center;
+      font-size: 1rem;
+      color: #997acc;
+      margin-bottom: 2rem;
+    }
 
-                <div>
-                    <button type="submit"
-                            class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
-                        Enter the Haunt
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</x-guest-layout>
+    label {
+      font-size: 1rem;
+      display: block;
+      margin-bottom: 0.4rem;
+      color: #7c5de0;
+      font-weight: 600;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      background-color: #f9f4ff;
+      border: 1px solid #d9c6f4;
+      color: #333;
+      font-size: 1rem;
+      margin-bottom: 1.25rem;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #b38aff;
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(179, 138, 255, 0.2);
+    }
+
+    .checkbox-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+      color: #7a6a9a;
+      margin-bottom: 1.5rem;
+    }
+
+    .checkbox-container input {
+      margin-right: 6px;
+    }
+
+    .checkbox-container a {
+      color: #a774ff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .checkbox-container a:hover {
+      text-decoration: underline;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.9rem;
+      border: none;
+      border-radius: 0.8rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      background: linear-gradient(to right, #d8b6ff, #9d6bff);
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 8px 16px rgba(177, 123, 255, 0.3);
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(to right, #c69aff, #844dff);
+      transform: scale(1.03);
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      color: #8b7ea8;
+    }
+
+    .footer-text a {
+      color: #a774ff;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .footer-text a:hover {
+      text-decoration: underline;
+    }
+
+    .session-status, .error-message {
+      font-size: 0.95rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .session-status {
+      color: #44aaff;
+    }
+
+    .error-message {
+      color: #ff4b7d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2>Welcome Back</h2>
+    <p class="description">Please enter your credentials to sign in</p>
+
+    <!-- Session Status -->
+    @if (session('status'))
+      <div class="session-status">{{ session('status') }}</div>
+    @endif
+
+    <form method="POST" action="{{ route('login') }}">
+      @csrf
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="you@example.com">
+      @error('email')
+        <div class="error-message">{{ $message }}</div>
+      @enderror
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required placeholder="••••••••">
+      @error('password')
+        <div class="error-message">{{ $message }}</div>
+      @enderror
+
+      <div class="checkbox-container">
+        <label><input type="checkbox" name="remember"> Remember me</label>
+        @if (Route::has('password.request'))
+          <a href="{{ route('password.request') }}">Forgot password?</a>
+        @endif
+      </div>
+
+      <button type="submit" class="submit-btn">Log In</button>
+    </form>
+
+    <p class="footer-text">
+      Don’t have an account?
+      <a href="{{ route('register') }}">Sign up</a>
+    </p>
+  </div>
+
+</body>
+</html>
